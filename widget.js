@@ -3,28 +3,21 @@
 
   // var WIDGET_URL = "https://epis.huddymerrabuddy2003.workers.dev/chat-ui.html";
   var WIDGET_URL = "chat-ui.html";
-  var BUBBLE_SIZE = 43;
+  var BUBBLE_SIZE = 50;
   var BUBBLE_BOTTOM = 60;
-  var BUBBLE_RIGHT = 8;
+  var BUBBLE_RIGHT = 10;
+  var INTERFACE_RIGHT = 40; 
   var PRIMARY_COLOR = "#19b2ee";
   var PRIMARY_DARK = "#0d8abf";
 
-  if (document.getElementById("epis-chat-root")) return; // prevent double init
+  if (document.getElementById("epis-chat-root")) return;
 
   var style = document.createElement("style");
   style.textContent = [
     "#epis-chat-bubble{",
-    "position:fixed;bottom:" +
-      BUBBLE_BOTTOM +
-      "px;right:" +
-      BUBBLE_RIGHT +
-      "px;",
+    "position:fixed;bottom:" + BUBBLE_BOTTOM + "px;right:" + BUBBLE_RIGHT + "px;",
     "width:" + BUBBLE_SIZE + "px;height:" + BUBBLE_SIZE + "px;",
-    "background:linear-gradient(145deg," +
-      PRIMARY_COLOR +
-      "," +
-      PRIMARY_DARK +
-      ");",
+    "background:linear-gradient(145deg," + PRIMARY_COLOR + "," + PRIMARY_DARK + ");",
     "border-radius:50%;display:flex;align-items:center;justify-content:center;",
     "cursor:pointer;z-index:2147483646;",
     "box-shadow:0 6px 24px rgba(25,178,238,.35);",
@@ -39,11 +32,7 @@
     "#epis-chat-bubble svg{width:18px;height:18px;fill:#fff;transition:transform .3s;}",
     "#epis-chat-bubble.epis-active svg{transform:rotate(90deg);}",
     "#epis-chat-frame{",
-    "position:fixed;bottom:" +
-      (BUBBLE_BOTTOM + BUBBLE_SIZE + 16) +
-      "px;right:" +
-      BUBBLE_RIGHT +
-      "px;",
+    "position:fixed;bottom:" + (BUBBLE_BOTTOM + BUBBLE_SIZE + 16) + "px;right:" + INTERFACE_RIGHT + "px;",
     "width:400px;height:650px;max-height:82vh;",
     "border:none;border-radius:22px;",
     "box-shadow:0 16px 56px rgba(13,34,51,.18),0 2px 8px rgba(0,0,0,.07);",
@@ -79,7 +68,6 @@
   frame.id = "epis-chat-frame";
   frame.src = WIDGET_URL;
   frame.title = "ePIS Chat Assistant";
-  // frame.setAttribute("allow", "");
   root.appendChild(frame);
 
   var isOpen = false;
@@ -106,12 +94,10 @@
     }
   });
 
-  // CLOSE FROM IFRAME
   window.addEventListener("message", function (e) {
     if (e.data === "epis:close") toggle();
   });
 
-  //ICONS
   function chatIcon() {
     return '<svg viewBox="0 0 24 24"><path d="M12 3C6.48 3 2 6.92 2 12c0 2.38 1.05 4.52 2.81 6.17L4 22l4.2-1.82c1.04.29 2.13.45 3.27.45 5.52 0 10-3.92 10-9s-4.48-9-10-9z"/></svg>';
   }
