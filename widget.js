@@ -2,10 +2,9 @@
   "use strict";
 
   var WIDGET_URL = "https://epis.huddymerrabuddy2003.workers.dev/chat-ui.html";
-  // var WIDGET_URL = "chat-ui.html";
   var BUBBLE_SIZE = 56;
   var BUBBLE_TOP = "90%";
-  var INTERFACE_RIGHT = 40; 
+  var INTERFACE_RIGHT = 20; 
   var PRIMARY_COLOR = "#19b2ee";
   var PRIMARY_DARK = "#0d8abf";
 
@@ -42,7 +41,7 @@
     "}",
     "#epis-chat-bubble.epis-active svg{transform:rotate(180deg);}",
     "#epis-chat-frame{",
-    "position:fixed;top:50%;right:76px;",
+    "position:fixed;top:50%;right:" + INTERFACE_RIGHT + "px;",  // Changed from 76px to use variable
     "transform:translateY(-50%) translateX(20px) scale(.95);",
     "width:400px;height:650px;max-height:82vh;",
     "border:none;border-radius:16px;",
