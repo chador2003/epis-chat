@@ -2,7 +2,7 @@
   "use strict";
 
   var WIDGET_URL = "https://epis.huddymerrabuddy2003.workers.dev/chat-ui.html";
-  var BUBBLE_SIZE = 56;
+  var BUBBLE_SIZE = 45;
   var BUBBLE_TOP = "90%";
   var INTERFACE_RIGHT = 20; 
   var PRIMARY_COLOR = "#19b2ee";
