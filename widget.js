@@ -1,8 +1,8 @@
 (function () {
   "use strict";
 
-  // var WIDGET_URL = "https://epis.huddymerrabuddy2003.workers.dev/chat-ui.html";
   var WIDGET_URL = "chat-ui.html";
+  // var WIDGET_URL = "chat-ui.html";
   var BUBBLE_SIZE = 56;
   var BUBBLE_TOP = "90%";
   var INTERFACE_RIGHT = 40; 
