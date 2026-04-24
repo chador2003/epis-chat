@@ -1,18 +1,20 @@
-const API_URL = "https://aichat.thimphutechpark.bt/chat";
+const API_URL = "http://localhost:9000/chat";
 const sendBtn = document.getElementById("sendBtn");
 const input = document.getElementById("user-input");
 const messages = document.getElementById("chat-messages");
 const now = new Date();
 
+const CLIENT_ID_STORAGE_KEY = "epis_client_id";
+
 // Options to customize the output
-const options = {
-  weekday: "long",
-  year: "numeric",
-  month: "long",
-  day: "numeric",
+const options = { 
+  weekday: 'long', 
+  year: 'numeric', 
+  month: 'long', 
+  day: 'numeric' 
 };
 
-const currentDate = now.toLocaleDateString("en-US", options);
+const currentDate = now.toLocaleDateString('en-US', options);
 
 marked.setOptions({
   breaks: true,
@@ -22,6 +24,26 @@ marked.setOptions({
 
 function closeChat() {
   window.parent.postMessage("epis:close", "*");
+}
+
+function generateClientId() {
+  if (window.crypto && typeof window.crypto.randomUUID === "function") {
+    return window.crypto.randomUUID();
+  }
+  return `cid_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 12)}`;
+}
+
+function getOrCreateClientId() {
+  try {
+    const existing = localStorage.getItem(CLIENT_ID_STORAGE_KEY);
+    if (existing && existing.trim()) return existing.trim();
+
+    const created = generateClientId();
+    localStorage.setItem(CLIENT_ID_STORAGE_KEY, created);
+    return created;
+  } catch (e) {
+    return generateClientId();
+  }
 }
 
 /* MESSAGE HELPERS */
@@ -102,39 +124,58 @@ async function sendMessage() {
   showTypingDots();
 
   try {
+    const clientId = getOrCreateClientId();
     const res = await fetch(API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-Client-ID": clientId,
       },
       body: JSON.stringify({
-        query: text,
+        query: text
       }),
     });
 
-    if (!res.ok) {
-      throw new Error(`HTTP error! status: ${res.status}`);
-    }
-
     hideTypingDots();
+
+    if (!res.ok) {
+      let message = `Request failed (HTTP ${res.status}).`;
+      try {
+        const contentType = res.headers.get("content-type") || "";
+        if (contentType.includes("application/json")) {
+          const data = await res.json();
+          if (data && typeof data.detail === "string" && data.detail.trim()) {
+            message = data.detail.trim();
+          }
+        } else {
+          const textBody = await res.text();
+          if (textBody && textBody.trim()) message = textBody.trim();
+        }
+      } catch (e) {
+        // ignore parse errors
+      }
+
+      addBotMessage(message);
+      return;
+    }
 
     // Handle streaming response
     const reader = res.body.getReader();
     const decoder = new TextDecoder();
     let fullResponse = "";
-
+    
     // Create bot message div to update progressively
     const botMessageDiv = createBotMessage();
 
     while (true) {
       const { done, value } = await reader.read();
-
+      
       if (done) break;
-
+      
       // Decode chunk and append to full response
       const chunk = decoder.decode(value, { stream: true });
       fullResponse += chunk;
-
+      
       // Update the bot message with current response
       updateBotMessage(botMessageDiv, fullResponse);
     }
@@ -145,12 +186,11 @@ async function sendMessage() {
     } else {
       updateBotMessage(botMessageDiv, "I couldn't retrieve that information.");
     }
+
   } catch (err) {
     console.error("Fetch error:", err);
     hideTypingDots();
-    addBotMessage(
-      "⚠️ Unable to connect to ePIS services. Error: " + err.message,
-    );
+    addBotMessage("⚠️ Unable to connect to ePIS services. Error: " + err.message);
   } finally {
     input.disabled = false;
     sendBtn.disabled = false;
