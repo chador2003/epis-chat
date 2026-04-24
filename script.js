@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:9000/chat";
+const API_URL = "https://epis.huddymerrabuddy2003.workers.dev/api/chat";
 const sendBtn = document.getElementById("sendBtn");
 const input = document.getElementById("user-input");
 const messages = document.getElementById("chat-messages");
