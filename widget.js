@@ -8,7 +8,7 @@
   var PRIMARY_COLOR = "#19b2ee";
   var PRIMARY_DARK = "#0d8abf";
 
-  if (document.getElementById("epis-chat-root")) return;
+  if (documentx.getElementById("epis-chat-root")) return;
 
   var style = document.createElement("style");
   style.textContent = [
