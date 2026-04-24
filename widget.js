@@ -13,7 +13,7 @@
   var style = document.createElement("style");
   style.textContent = [
     "#epis-chat-bubble{",
-    "position:fixed;top:" + BUBBLE_TOP + ";right:0;",
+    "position:fixed;top:" + BUBBLE_TOP + ";right:-10px;",
     "transform:translateY(-50%);",
     "width:" + BUBBLE_SIZE + "px;height:" + BUBBLE_SIZE + "px;",
     "background:linear-gradient(135deg," + PRIMARY_COLOR + "," + PRIMARY_DARK + ");",
